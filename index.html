@@ -291,10 +291,10 @@
                     <label for="content-type">Tipo de Conteúdo Principal</label>
                     <select id="content-type" required>
                         <option value="">-- Selecione o Tipo --</option>
-                        <option value="jogo">Jogo</option>
-                        <option value="app_geral">App (Geral)</option>
-                        <option value="frp">FRP (Ferramentas de Desbloqueio)</option>
-                        <option value="software">Software (PC/Outros)</option>
+                        <option value="jogo">Jogos (Ação, Aventura, etc.)</option>
+                        <option value="app_geral">Apps (Geral - Produtividade, Redes Sociais, etc.)</option>
+                        <option value="frp">FRP/Desbloqueio (Samsung, Motorola, etc.)</option>
+                        <option value="software">Software (PC/Outros - Sistema Operacional, Utilitários, etc.)</option>
                     </select>
                 </div>
 
@@ -381,6 +381,33 @@
                 
                 <div id="apk-version-status-message" class="status-message"></div>
             </div>
+            
+            <div style="margin-top: 40px; border-top: 1px solid #CED4DA; padding-top: 30px; width: 100%;">
+                <h2 style="font-size: 1.2rem; margin-bottom: 20px;">Lançamento de Notificação In-App (Menu Hamburguer)</h2>
+                
+                <p id="notification-info" style="margin-bottom: 15px; font-size: 0.9rem; color: #6c757d; text-align: left;">
+                    Ao enviar, o ponto vermelho aparecerá no menu hamburguer de todos os usuários até que eles cliquem no link da notificação.
+                </p>
+
+                <form id="notification-control-form">
+                    <div class="form-group">
+                        <label for="notification-link" style="text-align: left;">Link de Ação da Notificação (Onde o usuário será levado)</label>
+                        <input type="url" id="notification-link" placeholder="Ex: https://link.para.o.apk" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notification-message" style="text-align: left;">Texto da Notificação (Mostrado no menu)</label>
+                        <input type="text" id="notification-message" value="Nova atualização, clique aqui para baixar" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-submit" id="send-notification-btn" style="background-color: #F7A700;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-ring"><path d="M10 2c-3.1 0-6 1.8-6 6v4.5l-2 2v2h20v-2l-2-2V8c0-4.2-3.4-6-6-6Z"/><path d="M10 2c0 2.2 1.8 4 4 4"/><circle cx="12" cy="18" r="1"/><path d="M12 21a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z"/></svg>
+                        Enviar Notificação Agora
+                    </button>
+                </form>
+                
+                <div id="notification-status-message" class="status-message"></div>
+            </div>
             <div style="margin-top: 30px; display: flex; gap: 10px;">
                 <button class="btn btn-secondary" id="open-removal-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
@@ -438,20 +465,18 @@
         // Senha de Acesso (AJUSTADA COM SUA SENHA: 857629056)
         const ADMIN_PASSWORD = "857629056"; 
 
-        // Mapeamentos de categorias para o formulário (SIMPLIFICADO conforme a estrutura do site)
-        // Isso garante que o campo 'Categoria Específica' seja preenchido com a categoria principal,
-        // removendo a necessidade das subcategorias detalhadas.
-        const categoriesMap = {
-            'jogo': ['Jogo Geral'],
-            'app_geral': ['App Geral'],
-            'frp': ['FRP / Desbloqueio'],
-            'software': ['Software Geral']
-        };
-
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         let isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
+        // Mapeamentos de categorias para o formulário (Espelha o main.js)
+        const categoriesMap = {
+            'jogo': ['Ação', 'Aventura', 'Puzzle', 'Estratégia', 'Simulação'],
+            'app_geral': ['Produtividade', 'Redes Sociais', 'Ferramentas', 'Entretenimento'],
+            'frp': ['Samsung', 'Motorola', 'Xiaomi', 'Geral'],
+            'software': ['Sistema Operacional', 'Utilitários', 'Segurança', 'Design']
+        };
 
         // --- REFERÊNCIAS DOM ---
         const authScreen = document.getElementById('auth-screen');
@@ -480,13 +505,19 @@
         const deleteSelectedBtn = document.getElementById('delete-selected-btn');
         const removalStatusMessage = document.getElementById('removal-status-message');
 
-        // --- NOVAS REFERÊNCIAS DOM DO APK ---
+        // Referências do APK
         const apkVersionControlForm = document.getElementById('apk-version-control-form');
         const serverApkVersion = document.getElementById('server-apk-version');
         const serverApkLink = document.getElementById('server-apk-link');
         const newApkVersion = document.getElementById('new-apk-version');
         const newApkLink = document.getElementById('new-apk-link');
         const apkVersionStatusMessage = document.getElementById('apk-version-status-message');
+        
+        // NOVO: Referências da Notificação
+        const notificationControlForm = document.getElementById('notification-control-form');
+        const notificationLink = document.getElementById('notification-link');
+        const notificationMessage = document.getElementById('notification-message');
+        const notificationStatusMessage = document.getElementById('notification-status-message');
 
 
         // --- FUNÇÕES DE UTILIDADE ---
@@ -527,8 +558,7 @@
             if (selectedType && categoriesMap[selectedType]) {
                 categoriesMap[selectedType].forEach(category => {
                     const option = document.createElement('option');
-                    // Mantém a normalização do valor para o banco de dados (ex: jogo geral -> jogo_geral)
-                    option.value = category.toLowerCase().replace(/\s/g, '_').replace(/\//g, ''); 
+                    option.value = category.toLowerCase().replace(/\s/g, '_');
                     option.textContent = category;
                     contentCategory.appendChild(option);
                 });
@@ -540,7 +570,7 @@
 
         // --- FUNÇÕES DE FIREBASE (CRUD) ---
         
-        // 1. LOGIN (Simples, baseado em senha hardcoded)
+        // 1. LOGIN
         async function handleLogin(e) {
             e.preventDefault();
             const password = adminPasswordInput.value;
@@ -549,7 +579,6 @@
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Entrando...';
 
-            // Simulação de delay/API call
             await new Promise(resolve => setTimeout(resolve, 1000)); 
 
             if (password === ADMIN_PASSWORD) {
@@ -560,7 +589,7 @@
                 showScreen('admin-form-screen');
                 
                 await fetchServerVersion();
-                await fetchApkVersion(); // NOVO: Carrega a versão do APK após o login
+                await fetchApkVersion(); 
 
             } else {
                 setStatus('Senha incorreta. Tente novamente.', 'error', loginStatusMessage);
@@ -600,19 +629,18 @@
                 full_description: fullDescription,
                 download_link: downloadLink,
                 image_link: imageLink,
-                timestamp: Date.now(), // Para ordenação
-                is_featured: false, // Default
-                downloads: 0 // Default
+                createdAt: Date.now(), // Para ordenação
+                is_featured: false, 
+                downloads: 0 
             };
 
             try {
-                // Adiciona um documento com ID gerado automaticamente
                 const newDocRef = doc(collection(db, 'content')); 
                 await setDoc(newDocRef, contentData);
 
                 setStatus(`Sucesso! "${name}" enviado com o ID: ${newDocRef.id}`, 'success', statusMessage);
                 contentForm.reset(); 
-                updateCategories(); // Reseta a categoria
+                updateCategories(); 
             } catch (error) {
                 console.error("Erro ao enviar documento: ", error);
                 setStatus(`Erro ao enviar: ${error.message}`, 'error', statusMessage);
@@ -672,8 +700,6 @@
             }
         }
         
-        // --- NOVAS FUNÇÕES: Controle de Versão do APK ---
-
         // 6. LER VERSÃO ATUAL DO APK NO FIREBASE
         async function fetchApkVersion() {
             try {
@@ -687,8 +713,7 @@
                     serverApkLink.textContent = data.apk_link || 'N/A';
                     serverApkLink.href = data.apk_link || '#';
                     
-                    // Pré-preenche o campo de nova versão com a versão atual
-                    newApkVersion.value = data.apk_version || '1.0';
+                    newApkVersion.value = data.apk_version || '1.0.0';
                 } else {
                     serverApkVersion.textContent = '1.0.0 (Inicial)';
                     serverApkLink.textContent = 'N/A';
@@ -701,7 +726,7 @@
         }
 
 
-        // 7. ESCREVER NOVA VERSÃO E LINK NO FIREBASE
+        // 7. ESCREVER NOVA VERSÃO E LINK NO FIREBASE (APK)
         async function handleApkVersionUpdate(e) {
             e.preventDefault();
             const version = newApkVersion.value.trim();
@@ -719,7 +744,6 @@
             try {
                 const settingsDocRef = doc(db, 'settings', 'config');
                 
-                // Atualiza apenas os campos do APK
                 await updateDoc(settingsDocRef, {
                     apk_version: version,
                     apk_link: link,
@@ -728,7 +752,6 @@
 
                 setStatus(`Sucesso! APK versão ${version} lançado.`, 'success', apkVersionStatusMessage);
                 
-                // Recarrega as informações exibidas
                 await fetchApkVersion();
                 
             } catch (error) {
@@ -740,7 +763,48 @@
             }
         }
         
-        // 8. LISTAR CONTEÚDO PARA REMOÇÃO
+        // 8. ENVIAR NOTIFICAÇÃO (NOVO)
+        async function handleNotificationSend(e) {
+            e.preventDefault();
+            const link = notificationLink.value.trim();
+            const message = notificationMessage.value.trim();
+            
+            if (!link) {
+                setStatus('O link da notificação é obrigatório.', 'error', notificationStatusMessage);
+                return;
+            }
+            
+            const sendBtn = document.getElementById('send-notification-btn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
+
+            try {
+                // Gera um ID único baseado no timestamp para garantir que seja sempre "novo" para os usuários
+                const newNotificationId = Date.now().toString(); 
+                const updateDocRef = doc(db, 'settings', 'latest_update');
+                
+                // Grava a nova notificação
+                await setDoc(updateDocRef, {
+                    id: newNotificationId, // ID único para forçar a notificação no cliente
+                    link: link,           // Link de clique
+                    message: message,     // Mensagem (para flexibilidade futura)
+                    timestamp: newNotificationId
+                });
+
+                setStatus(`Sucesso! Notificação (ID: ${newNotificationId}) enviada para todos os usuários.`, 'success', notificationStatusMessage);
+                notificationControlForm.reset();
+                notificationMessage.value = 'Nova atualização, clique aqui para baixar'; // Reseta o valor padrão
+                
+            } catch (error) {
+                console.error("Erro ao enviar notificação:", error);
+                setStatus(`Erro ao enviar notificação: ${error.message}`, 'error', notificationStatusMessage);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-ring"><path d="M10 2c-3.1 0-6 1.8-6 6v4.5l-2 2v2h20v-2l-2-2V8c0-4.2-3.4-6-6-6Z"/><path d="M10 2c0 2.2 1.8 4 4 4"/><circle cx="12" cy="18" r="1"/><path d="M12 21a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z"/></svg> Enviar Notificação Agora';
+            }
+        }
+        
+        // 9. LISTAR CONTEÚDO PARA REMOÇÃO
         async function fetchContentList() {
             try {
                 contentList.innerHTML = '<li style="text-align:center; padding: 15px;">Carregando...</li>';
@@ -771,7 +835,7 @@
             }
         }
         
-        // 9. ATUALIZAR CONTAGEM DE SELEÇÃO
+        // 10. ATUALIZAR CONTAGEM DE SELEÇÃO
         function checkSelection() {
             const checkboxes = contentList.querySelectorAll('input[type="checkbox"]');
             let count = 0;
@@ -785,7 +849,7 @@
         // Exponha a função ao escopo global para o `onchange`
         window.checkSelection = checkSelection;
 
-        // 10. DELETAR CONTEÚDO
+        // 11. DELETAR CONTEÚDO
         async function deleteSelectedContent() {
             if (!confirm("Tem certeza que deseja EXCLUIR os itens selecionados? Esta ação é IRREVERSÍVEL.")) return;
 
@@ -833,7 +897,10 @@
             contentForm.addEventListener('submit', handleContentSubmit);
             contentType.addEventListener('change', updateCategories);
             versionControlForm.addEventListener('submit', handleVersionUpdate);
-            apkVersionControlForm.addEventListener('submit', handleApkVersionUpdate); // Listener do formulário APK
+            apkVersionControlForm.addEventListener('submit', handleApkVersionUpdate); 
+            
+            // NOVO: Handlers da Notificação
+            notificationControlForm.addEventListener('submit', handleNotificationSend);
             
             // Handlers da Tela de Remoção
             openRemovalBtn.addEventListener('click', () => {
