@@ -291,10 +291,10 @@
                     <label for="content-type">Tipo de Conteúdo Principal</label>
                     <select id="content-type" required>
                         <option value="">-- Selecione o Tipo --</option>
-                        <option value="jogo">Jogos (Ação, Aventura, etc.)</option>
-                        <option value="app_geral">Apps (Geral - Produtividade, Redes Sociais, etc.)</option>
-                        <option value="frp">FRP/Desbloqueio (Samsung, Motorola, etc.)</option>
-                        <option value="software">Software (PC/Outros - Sistema Operacional, Utilitários, etc.)</option>
+                        <option value="jogo">Jogo</option>
+                        <option value="app_geral">App (Geral)</option>
+                        <option value="frp">FRP (Ferramentas de Desbloqueio)</option>
+                        <option value="software">Software (PC/Outros)</option>
                     </select>
                 </div>
 
@@ -334,6 +334,7 @@
                     Enviar para Victor Store
                 </button>
             </form>
+            
             <div id="status-message" class="status-message"></div>
 
             <div style="margin-top: 40px; border-top: 1px solid #CED4DA; padding-top: 30px; width: 100%;">
@@ -353,107 +354,60 @@
                 </form>
                 <div id="version-status-message" class="status-message"></div>
             </div>
-            
-            <div style="margin-top: 40px; border-top: 1px solid #CED4DA; padding-top: 30px; width: 100%;">
-                <h2 style="font-size: 1.2rem; margin-bottom: 20px;">Controle de Versão do APK (Atualização In-App)</h2>
-                
-                <div id="current-apk-display" style="margin-bottom: 15px; font-weight: 500; text-align: left;">
-                    Versão Atual do APK no Servidor: <span id="server-apk-version" style="color: var(--secondary-highlight-color);">Carregando...</span>
-                    <div style="font-size: 0.85rem; color: #6c757d; margin-top: 5px;">Link de Download Atual: <a href="#" id="server-apk-link" target="_blank" style="color: var(--secondary-highlight-color); word-break: break-all;">Carregando...</a></div>
-                </div>
-                
-                <form id="apk-version-control-form">
-                    <div class="form-group">
-                        <label for="new-apk-version" style="text-align: left;">Nova Versão do APK (Ex: 2.0.1, 3.0)</label>
-                        <input type="text" id="new-apk-version" placeholder="Ex: 2.0.1" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="new-apk-link" style="text-align: left;">Link Direto do Novo APK (.apk)</label>
-                        <input type="url" id="new-apk-link" placeholder="Ex: https://storage.firebase.com/seuapp-v2.0.1.apk" required>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-submit" id="update-apk-btn" style="background-color: var(--secondary-highlight-color);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                        Lançar Novo APK
-                    </button>
-                </form>
-                
-                <div id="apk-version-status-message" class="status-message"></div>
-            </div>
-            
-            <div style="margin-top: 40px; border-top: 1px solid #CED4DA; padding-top: 30px; width: 100%;">
-                <h2 style="font-size: 1.2rem; margin-bottom: 20px;">Lançamento de Notificação In-App (Menu Hamburguer)</h2>
-                
-                <p id="notification-info" style="margin-bottom: 15px; font-size: 0.9rem; color: #6c757d; text-align: left;">
-                    Ao enviar, o ponto vermelho aparecerá no menu hamburguer de todos os usuários até que eles cliquem no link da notificação.
-                </p>
-
-                <form id="notification-control-form">
-                    <div class="form-group">
-                        <label for="notification-link" style="text-align: left;">Link de Ação da Notificação (Onde o usuário será levado)</label>
-                        <input type="url" id="notification-link" placeholder="Ex: https://link.para.o.apk" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="notification-message" style="text-align: left;">Texto da Notificação (Mostrado no menu)</label>
-                        <input type="text" id="notification-message" value="Nova atualização, clique aqui para baixar" required>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-submit" id="send-notification-btn" style="background-color: #F7A700;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-ring"><path d="M10 2c-3.1 0-6 1.8-6 6v4.5l-2 2v2h20v-2l-2-2V8c0-4.2-3.4-6-6-6Z"/><path d="M10 2c0 2.2 1.8 4 4 4"/><circle cx="12" cy="18" r="1"/><path d="M12 21a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z"/></svg>
-                        Enviar Notificação Agora
-                    </button>
-                </form>
-                
-                <div id="notification-status-message" class="status-message"></div>
-            </div>
             <div style="margin-top: 30px; display: flex; gap: 10px;">
                 <button class="btn btn-secondary" id="open-removal-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                    Remover Itens
-                </button>
-                <button class="btn btn-logout" id="logout-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-                    Sair
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M15 6V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v2"/></svg>
+                    Sacar Cenas (Excluir)
                 </button>
             </div>
-        </div>
-
-        <div class="container" id="removal-screen" style="display: none; max-width: 650px;">
-            <h2 style="font-size: 1.5rem; color: var(--error-color); margin-bottom: 20px;">Remoção de Conteúdo</h2>
-            <p style="margin-bottom: 10px; text-align: left; width: 100%;">Selecione os itens a serem removidos do Firestore:</p>
-            <button class="btn btn-secondary" id="load-content-btn" style="margin-top: 0; background-color: #f7a700;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.76 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.76-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
-                Carregar Lista Completa
-            </button>
             
-            <ul id="content-list" style="margin-top: 20px;">
-                </ul>
-
-            <button class="btn btn-delete" id="delete-selected-btn" disabled>
-                Excluir Itens Selecionados (0)
+            <button class="btn btn-logout" id="logout-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                Voltar para o Login
             </button>
-            <div id="removal-status-message" class="status-message"></div>
-            <button class="btn btn-logout" id="close-removal-btn" style="margin-top: 20px;">Voltar ao Painel</button>
         </div>
+        
     </div>
+    
+    <div class="container" id="removal-screen" style="display: none;">
+        <h1>Remover Conteúdo da Victor Store</h1>
+        
+        <p style="margin-bottom: 20px; font-weight: 500;">Selecione os itens que deseja excluir permanentemente:</p>
+        
+        <div id="removal-status-message" class="status-message"></div>
+        
+        <ul id="content-list">
+            </ul>
 
+        <button class="btn btn-delete" id="delete-selected-btn">
+             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-square"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            Excluir Itens Selecionados
+        </button>
+
+        <button class="btn btn-logout" id="close-removal-btn" style="margin-top: 10px;">
+             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            Voltar para o Painel
+        </button>
+        
+    </div>
+    
     <script type="module">
-        // Importações e Configuração do Firebase
+        
+        // --- CONFIGURAÇÃO E IMPORTS FIREBASE ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
         import { 
             getFirestore, 
             collection, 
-            doc,       
-            getDoc,    
-            setDoc,    
-            updateDoc, 
-            getDocs,
-            deleteDoc
+            addDoc,
+            serverTimestamp,
+            getDocs, 
+            deleteDoc, 
+            doc,
+            getDoc,     // Adicionado para ler a versão
+            setDoc      // Adicionado para gravar a versão
         } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-
-        // CONFIGURAÇÃO - Substitua com seus dados reais
+        
+        // Configuração Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAqUbFJRI1CplOQptliKmVZH90LB2AlZus",
             authDomain: "victor-store-42568.firebaseapp.com",
@@ -462,421 +416,416 @@
             messagingSenderId: "977015403689",
             appId: "1:977015403689:web:724a68bf4f7ff27f3065b8"
         };
-        // Senha de Acesso (AJUSTADA COM SUA SENHA: 857629056)
-        const ADMIN_PASSWORD = "857629056"; 
-
+        
+        // Inicializa Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        let isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-
-        // Mapeamentos de categorias para o formulário (Espelha o main.js)
-        const categoriesMap = {
-            'jogo': ['Ação', 'Aventura', 'Puzzle', 'Estratégia', 'Simulação'],
-            'app_geral': ['Produtividade', 'Redes Sociais', 'Ferramentas', 'Entretenimento'],
-            'frp': ['Samsung', 'Motorola', 'Xiaomi', 'Geral'],
-            'software': ['Sistema Operacional', 'Utilitários', 'Segurança', 'Design']
-        };
+        const contentCollectionRef = collection(db, 'content');
+        const settingsDocRef = doc(db, 'settings', 'config'); // Referência para o documento de configurações
 
         // --- REFERÊNCIAS DOM ---
+        const mainContainer = document.getElementById('main-container');
+        const removalScreen = document.getElementById('removal-screen');
+        const loadingScreen = document.getElementById('loading-screen');
         const authScreen = document.getElementById('auth-screen');
         const adminFormScreen = document.getElementById('admin-form-screen');
-        const loadingScreen = document.getElementById('loading-screen');
-        const removalScreen = document.getElementById('removal-screen');
         const passwordLoginForm = document.getElementById('password-login-form');
         const adminPasswordInput = document.getElementById('admin-password');
-        const loginStatusMessage = document.getElementById('login-status-message');
+        const loginBtn = document.getElementById('login-btn');
         const logoutBtn = document.getElementById('logout-btn');
         const contentForm = document.getElementById('content-form');
-        const contentType = document.getElementById('content-type');
-        const contentCategory = document.getElementById('content-category');
-        const categoryGroup = document.getElementById('category-group');
-        const statusMessage = document.getElementById('status-message');
         const submitBtn = document.getElementById('submit-btn');
-        const serverUIVersion = document.getElementById('server-ui-version');
-        const versionControlForm = document.getElementById('version-control-form');
-        const newUIVersion = document.getElementById('new-ui-version');
-        const versionStatusMessage = document.getElementById('version-status-message');
+        const statusMessage = document.getElementById('status-message');
+        const loginStatusMessage = document.getElementById('login-status-message');
+        const welcomeMessage = document.getElementById('welcome-message');
         
-        // Referências da Tela de Remoção
+        // DOM para remoção
         const openRemovalBtn = document.getElementById('open-removal-btn');
         const closeRemovalBtn = document.getElementById('close-removal-btn');
         const contentList = document.getElementById('content-list');
         const deleteSelectedBtn = document.getElementById('delete-selected-btn');
         const removalStatusMessage = document.getElementById('removal-status-message');
 
-        // Referências do APK
-        const apkVersionControlForm = document.getElementById('apk-version-control-form');
-        const serverApkVersion = document.getElementById('server-apk-version');
-        const serverApkLink = document.getElementById('server-apk-link');
-        const newApkVersion = document.getElementById('new-apk-version');
-        const newApkLink = document.getElementById('new-apk-link');
-        const apkVersionStatusMessage = document.getElementById('apk-version-status-message');
+        // DOM para Controle de Versão (NOVOS)
+        const serverUiVersionSpan = document.getElementById('server-ui-version');
+        const versionControlForm = document.getElementById('version-control-form');
+        const newUiVersionInput = document.getElementById('new-ui-version');
+        const updateVersionBtn = document.getElementById('update-version-btn');
+        const versionStatusMessage = document.getElementById('version-status-message');
+
+
+        // Campos do Formulário
+        const contentType = document.getElementById('content-type');
+        const contentName = document.getElementById('content-name');
+        const contentDescription = document.getElementById('content-description');
+        const contentFullDescription = document.getElementById('content-full-description');
+        const downloadLink = document.getElementById('download-link');
+        const imageLink = document.getElementById('image-link');
+        // NOVOS CAMPOS PARA CATEGORIAS DINÂMICAS
+        const categoryGroup = document.getElementById('category-group');
+        const contentCategory = document.getElementById('content-category');
         
-        // NOVO: Referências da Notificação
-        const notificationControlForm = document.getElementById('notification-control-form');
-        const notificationLink = document.getElementById('notification-link');
-        const notificationMessage = document.getElementById('notification-message');
-        const notificationStatusMessage = document.getElementById('notification-status-message');
+        // Variável de estado da sessão
+        let isAuthenticated = false;
+        
+        // SENHA ESTÁTICA CONFIGURADA
+        const ADMIN_PASSWORD = "857629056"; 
 
-
-        // --- FUNÇÕES DE UTILIDADE ---
-
-        function showScreen(screenId) {
-            authScreen.style.display = 'none';
-            adminFormScreen.style.display = 'none';
-            loadingScreen.style.display = 'none';
-            removalScreen.style.display = 'none';
-
-            if (screenId === 'auth-screen') {
-                authScreen.style.display = 'flex';
-                document.getElementById('main-container').style.maxWidth = '450px';
-            } else if (screenId === 'admin-form-screen') {
-                adminFormScreen.style.display = 'flex';
-                document.getElementById('main-container').style.maxWidth = '450px';
-            } else if (screenId === 'loading-screen') {
-                loadingScreen.style.display = 'flex';
-                document.getElementById('main-container').style.maxWidth = '450px';
-            } else if (screenId === 'removal-screen') {
-                removalScreen.style.display = 'flex';
-                document.getElementById('main-container').style.maxWidth = '650px';
-                fetchContentList(); 
-            }
-        }
-
-        function setStatus(message, type, targetElement) {
-            targetElement.textContent = message;
-            targetElement.className = `status-message ${type}`;
-            targetElement.style.display = 'block';
-            setTimeout(() => { targetElement.style.display = 'none'; }, 5000);
-        }
-
+        // --- NOVAS VARIÁVEIS DE CATEGORIA GLOBAIS (MÚSICA E FILME/SÉRIE REMOVIDOS) ---
+        
+        const contentCategories = {
+            // Categorias de JOGOS
+            jogo: [
+                "Ação/Aventura",
+                "RPG/Estratégia",
+                "Mundo Aberto (Open World)",
+                "Esportes",
+                "Corrida",
+                "Simulação",
+                "Arcade/Casual"
+            ],
+            // Categorias de APPS (Geral)
+            app_geral: [
+                "Entretenimento (Streaming/Vídeo)",
+                "Redes Sociais/Comunicação",
+                "Editores (Foto/Vídeo/Áudio)",
+                "Produtividade/Trabalho",
+                "Finanças/E-commerce",
+                "Utilidades/Sistema"
+            ],
+            // Categorias de FRP (Ferramentas)
+            frp: [
+                "Desbloqueio de Conta Google (FRP)",
+                "Remoção de Mi Account",
+                "Ferramentas de Flash/Rom",
+                "Drivers e Utilitários"
+            ],
+            // Categorias de Software (PC/Outros)
+            software: [
+                "Sistemas Operacionais (ISO/Img)",
+                "Programas de Edição (PC)",
+                "Utilitários de Sistema (PC)",
+                "Drivers de Hardware",
+                "Antivírus/Segurança"
+            ]
+        };
+        
+        // --- FUNÇÃO DE LÓGICA DE CATEGORIAS DINÂMICAS ---
+        
         function updateCategories() {
             const selectedType = contentType.value;
-            contentCategory.innerHTML = '<option value="">-- Selecione a Categoria --</option>';
-
-            if (selectedType && categoriesMap[selectedType]) {
-                categoriesMap[selectedType].forEach(category => {
+            contentCategory.innerHTML = '<option value="">-- Selecione a Categoria --</option>'; // Limpa as opções anteriores
+            contentCategory.value = ''; // Reseta o valor selecionado
+        
+            // Verifica se o tipo selecionado tem categorias definidas
+            if (selectedType && contentCategories[selectedType]) {
+                // Mostra o grupo de categorias
+                categoryGroup.style.display = 'block';
+                contentCategory.required = true;
+        
+                // Adiciona as novas opções
+                contentCategories[selectedType].forEach(category => {
                     const option = document.createElement('option');
-                    option.value = category.toLowerCase().replace(/\s/g, '_');
+                    option.value = category;
                     option.textContent = category;
                     contentCategory.appendChild(option);
                 });
-                categoryGroup.style.display = 'block';
+                
             } else {
+                // Esconde o grupo de categorias se não houver tipo selecionado ou subcategorias
                 categoryGroup.style.display = 'none';
+                contentCategory.required = false;
             }
         }
-
-        // --- FUNÇÕES DE FIREBASE (CRUD) ---
         
-        // 1. LOGIN
-        async function handleLogin(e) {
-            e.preventDefault();
-            const password = adminPasswordInput.value;
-            const loginBtn = document.getElementById('login-btn');
-
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Entrando...';
-
-            await new Promise(resolve => setTimeout(resolve, 1000)); 
-
-            if (password === ADMIN_PASSWORD) {
-                isAuthenticated = true;
-                localStorage.setItem('isAuthenticated', 'true');
-                setStatus('Login bem-sucedido!', 'success', loginStatusMessage);
+        // --- FUNÇÕES UTILITÁRIAS E DE EXIBIÇÃO ---
+        
+        function showScreen(screenId) {
+            loadingScreen.style.display = 'none';
+            authScreen.style.display = 'none';
+            adminFormScreen.style.display = 'none';
+            removalScreen.style.display = 'none';
+            
+            // Gerencia qual container deve ser exibido
+            mainContainer.style.display = 'block';
+            
+            if (screenId === 'auth-screen') {
+                authScreen.style.display = 'flex';
                 adminPasswordInput.value = '';
-                showScreen('admin-form-screen');
-                
-                await fetchServerVersion();
-                await fetchApkVersion(); 
-
+                clearLoginStatus();
+            } else if (screenId === 'admin-form-screen') {
+                adminFormScreen.style.display = 'flex';
+                updateCategories(); // Inicializa a lógica de categorias
+                fetchCurrentVersion(); // <--- NOVO: Carrega a versão atual ao entrar no painel
+            } else if (screenId === 'removal-screen') {
+                mainContainer.style.display = 'none';
+                removalScreen.style.display = 'flex';
+                fetchContentList(); // Carrega a lista ao abrir a tela de remoção
             } else {
-                setStatus('Senha incorreta. Tente novamente.', 'error', loginStatusMessage);
+                loadingScreen.style.display = 'flex';
             }
             
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg> Entrar';
+            clearStatus();
+            clearRemovalStatus();
+            clearVersionStatus(); // NOVO
         }
 
-        // 2. LOGOUT
+        function setStatus(message, type = 'error', target = statusMessage) {
+            target.textContent = message;
+            target.className = `status-message ${type}`;
+            target.style.display = 'block';
+        }
+        
+        function clearStatus() {
+            statusMessage.style.display = 'none';
+            statusMessage.textContent = '';
+        }
+        
+        function clearLoginStatus() {
+            loginStatusMessage.style.display = 'none';
+            loginStatusMessage.textContent = '';
+        }
+        
+        function clearRemovalStatus() {
+            removalStatusMessage.style.display = 'none';
+            removalStatusMessage.textContent = '';
+        }
+        
+        function clearVersionStatus() {
+            versionStatusMessage.style.display = 'none';
+            versionStatusMessage.textContent = '';
+        }
+        
+        // --- FUNÇÃO DE LOGIN POR SENHA ---
+        
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Verificando...`;
+            clearLoginStatus();
+
+            const enteredPassword = adminPasswordInput.value.trim();
+            
+            // Simula a verificação de login
+            await new Promise(resolve => setTimeout(resolve, 500)); 
+
+            if (enteredPassword === ADMIN_PASSWORD) {
+                isAuthenticated = true;
+                showScreen('admin-form-screen');
+            } else {
+                isAuthenticated = false;
+                setStatus('Senha incorreta. Tente novamente.', 'error', loginStatusMessage);
+            }
+
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg> Entrar`;
+        }
+        
+        // --- LOGOUT (Voltar para a tela de senha) ---
         function handleLogout() {
             isAuthenticated = false;
-            localStorage.removeItem('isAuthenticated');
             showScreen('auth-screen');
         }
 
-        // 3. ENVIAR CONTEÚDO
-        async function handleContentSubmit(e) {
+        // --- SUBMISSÃO DO FORMULÁRIO (ADD DOC) ---
+        
+        contentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+            clearStatus();
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
+            submitBtn.textContent = 'Enviando...';
 
-            const name = document.getElementById('content-name').value;
-            const type = contentType.value;
-            const category = contentCategory.value;
-            const description = document.getElementById('content-description').value;
-            const fullDescription = document.getElementById('content-full-description').value;
-            const downloadLink = document.getElementById('download-link').value;
-            const imageLink = document.getElementById('image-link').value;
-            
-            const contentData = {
-                name: name,
-                type: type, 
-                category: category,
-                description: description,
-                full_description: fullDescription,
-                download_link: downloadLink,
-                image_link: imageLink,
-                createdAt: Date.now(), // Para ordenação
-                is_featured: false, 
-                downloads: 0 
+            if (!isAuthenticated) {
+                setStatus('Erro: Acesso não autorizado. Por favor, faça login.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar para Victor Store';
+                return;
+            }
+
+            // 1. Coleta e validação dos dados
+            const newItem = {
+                type: contentType.value, // Tipo Principal (jogo, musica, filme_serie, etc.)
+                category: contentCategory.value, // Categoria Específica (Ação/Aventura, Rap, etc.)
+                name: contentName.value.trim(),
+                description: contentDescription.value.trim(),
+                fullDescription: contentFullDescription.value.trim(),
+                downloadLink: downloadLink.value.trim(),
+                image: imageLink.value.trim(),
+                createdAt: serverTimestamp(), 
+                updatedAt: serverTimestamp(),
+                submittedBy: 'Admin (Senha Estática)' 
             };
+            
+            // Validação agora inclui a Categoria, que é tornada 'required' dinamicamente
+            if (newItem.type === '' || newItem.category === '' || newItem.name === '' || newItem.downloadLink === '' || newItem.image === '' || newItem.description === '' || newItem.fullDescription === '') {
+                setStatus('Por favor, preencha todos os campos obrigatórios (Tipo de Conteúdo e Categoria Específica).', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar para Victor Store';
+                return;
+            }
 
             try {
-                const newDocRef = doc(collection(db, 'content')); 
-                await setDoc(newDocRef, contentData);
+                // 2. Adiciona o documento no Firestore
+                const docRef = await addDoc(contentCollectionRef, newItem);
 
-                setStatus(`Sucesso! "${name}" enviado com o ID: ${newDocRef.id}`, 'success', statusMessage);
+                // Mostra o Tipo Principal e a Categoria Específica no status de sucesso
+                setStatus(`Conteúdo "${newItem.name}" [${newItem.type.toUpperCase()}/${newItem.category}] adicionado com sucesso! ID: ${docRef.id}`, 'success');
                 contentForm.reset(); 
-                updateCategories(); 
+                updateCategories(); // Limpa e reseta o campo de categoria após o envio
+                
             } catch (error) {
-                console.error("Erro ao enviar documento: ", error);
-                setStatus(`Erro ao enviar: ${error.message}`, 'error', statusMessage);
+                console.error("Erro ao adicionar documento: ", error);
+                if (error.code === 'permission-denied') {
+                     setStatus(`ERRO: Permissão Negada. Confirme se as regras de segurança do Firestore permitem escrita.`, 'error');
+                } else {
+                    setStatus(`Erro ao salvar no Firestore: ${error.message}`, 'error');
+                }
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="m22 2-7 15-4-2-7 15-2-4 15-7 2-4-7-15z"/></svg> Enviar para Victor Store';
+                submitBtn.textContent = 'Enviar para Victor Store';
+            }
+        });
+        
+        // --- NOVO: LÓGICA DE CONTROLE DE VERSÃO ---
+        
+        /** Busca a versão atual de UI do Firestore e exibe */
+        async function fetchCurrentVersion() {
+             serverUiVersionSpan.textContent = 'Buscando...';
+             try {
+                const docSnap = await getDoc(settingsDocRef);
+                const currentVersion = docSnap.exists() ? docSnap.data().web_ui_version : 1.0;
+                serverUiVersionSpan.textContent = currentVersion.toFixed(1);
+                newUiVersionInput.value = (parseFloat(currentVersion) + 0.1).toFixed(1);
+            } catch (error) {
+                console.error("Erro ao carregar versão de UI:", error);
+                serverUiVersionSpan.textContent = 'ERRO';
             }
         }
         
-        // 4. LER VERSÃO DO SITE (UI)
-        async function fetchServerVersion() {
-            try {
-                const settingsDocRef = doc(db, 'settings', 'config'); 
-                const docSnap = await getDoc(settingsDocRef);
-
-                if (docSnap.exists() && docSnap.data().web_ui_version) {
-                    serverUIVersion.textContent = docSnap.data().web_ui_version;
-                    newUIVersion.value = docSnap.data().web_ui_version; 
-                } else {
-                    serverUIVersion.textContent = '1.0';
-                    newUIVersion.value = '1.0';
-                }
-            } catch (error) {
-                console.error("Erro ao carregar versão do servidor:", error);
-                setStatus('Erro ao carregar a versão atual do site.', 'error', versionStatusMessage);
-            }
-        }
-
-        // 5. ATUALIZAR VERSÃO DO SITE (UI)
-        async function handleVersionUpdate(e) {
+        /** Manipula a submissão para atualizar a versão de UI */
+        versionControlForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const version = parseFloat(newUIVersion.value);
+            clearVersionStatus();
+            
+            const newVersionValue = parseFloat(newUiVersionInput.value);
+            const currentVersion = parseFloat(serverUiVersionSpan.textContent) || 1.0;
 
-            if (isNaN(version)) {
-                setStatus('Versão inválida. Use um número (ex: 1.1).', 'error', versionStatusMessage);
+            if (newVersionValue <= currentVersion) {
+                setStatus(`A nova versão (${newVersionValue.toFixed(1)}) deve ser MAIOR que a versão atual (${currentVersion.toFixed(1)}).`, 'error', versionStatusMessage);
                 return;
             }
 
-            const updateBtn = document.getElementById('update-version-btn');
-            updateBtn.disabled = true;
-            updateBtn.textContent = 'Lançando...';
+            updateVersionBtn.disabled = true;
+            updateVersionBtn.textContent = 'Atualizando...';
 
             try {
-                const settingsDocRef = doc(db, 'settings', 'config');
-                await updateDoc(settingsDocRef, {
-                    web_ui_version: version
-                });
+                // Usa setDoc com merge: true para atualizar o campo ou criar o documento
+                await setDoc(settingsDocRef, {
+                    web_ui_version: newVersionValue,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
 
-                setStatus(`Sucesso! Versão de UI atualizada para ${version}.`, 'success', versionStatusMessage);
-                fetchServerVersion(); 
+                setStatus(`Versão de UI atualizada para ${newVersionValue.toFixed(1)}! Os usuários verão o aviso de atualização.`, 'success', versionStatusMessage);
+                fetchCurrentVersion(); // Recarrega o display
+                
             } catch (error) {
                 console.error("Erro ao atualizar versão de UI:", error);
-                setStatus(`Erro ao atualizar: ${error.message}`, 'error', versionStatusMessage);
+                setStatus(`Erro ao lançar atualização: ${error.message}`, 'error', versionStatusMessage);
             } finally {
-                updateBtn.disabled = false;
-                updateBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-upload"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.5"/><path d="M12 21v-8"/><path d="m16 16-4-4-4 4"/></svg> Lançar Atualização de UI';
+                updateVersionBtn.disabled = false;
+                updateVersionBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-upload"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.5"/><path d="M12 21v-8"/><path d="m16 16-4-4-4 4"/></svg> Lançar Atualização de UI`;
             }
-        }
-        
-        // 6. LER VERSÃO ATUAL DO APK NO FIREBASE
-        async function fetchApkVersion() {
-            try {
-                const settingsDocRef = doc(db, 'settings', 'config'); 
-                const docSnap = await getDoc(settingsDocRef);
+        });
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    
-                    serverApkVersion.textContent = data.apk_version || 'N/A';
-                    serverApkLink.textContent = data.apk_link || 'N/A';
-                    serverApkLink.href = data.apk_link || '#';
-                    
-                    newApkVersion.value = data.apk_version || '1.0.0';
-                } else {
-                    serverApkVersion.textContent = '1.0.0 (Inicial)';
-                    serverApkLink.textContent = 'N/A';
-                    newApkVersion.value = '1.0.0'; 
-                }
-            } catch (error) {
-                console.error("Erro ao carregar versão do APK:", error);
-                setStatus('Erro ao carregar a versão atual do APK.', 'error', apkVersionStatusMessage);
-            }
-        }
+        // --- FUNCIONALIDADE DE REMOÇÃO (Sacar Cenas) ---
 
-
-        // 7. ESCREVER NOVA VERSÃO E LINK NO FIREBASE (APK)
-        async function handleApkVersionUpdate(e) {
-            e.preventDefault();
-            const version = newApkVersion.value.trim();
-            const link = newApkLink.value.trim();
-
-            if (!version || !link) {
-                setStatus('Preencha a Nova Versão e o Link do APK.', 'error', apkVersionStatusMessage);
-                return;
-            }
-            
-            const updateBtn = document.getElementById('update-apk-btn');
-            updateBtn.disabled = true;
-            updateBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Lançando...';
-
-            try {
-                const settingsDocRef = doc(db, 'settings', 'config');
-                
-                await updateDoc(settingsDocRef, {
-                    apk_version: version,
-                    apk_link: link,
-                    last_apk_release: new Date().toISOString() 
-                });
-
-                setStatus(`Sucesso! APK versão ${version} lançado.`, 'success', apkVersionStatusMessage);
-                
-                await fetchApkVersion();
-                
-            } catch (error) {
-                console.error("Erro ao atualizar versão do APK:", error);
-                setStatus(`Erro ao lançar APK: ${error.message}`, 'error', apkVersionStatusMessage);
-            } finally {
-                updateBtn.disabled = false;
-                updateBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Lançar Novo APK';
-            }
-        }
-        
-        // 8. ENVIAR NOTIFICAÇÃO (NOVO)
-        async function handleNotificationSend(e) {
-            e.preventDefault();
-            const link = notificationLink.value.trim();
-            const message = notificationMessage.value.trim();
-            
-            if (!link) {
-                setStatus('O link da notificação é obrigatório.', 'error', notificationStatusMessage);
-                return;
-            }
-            
-            const sendBtn = document.getElementById('send-notification-btn');
-            sendBtn.disabled = true;
-            sendBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
-
-            try {
-                // Gera um ID único baseado no timestamp para garantir que seja sempre "novo" para os usuários
-                const newNotificationId = Date.now().toString(); 
-                const updateDocRef = doc(db, 'settings', 'latest_update');
-                
-                // Grava a nova notificação
-                await setDoc(updateDocRef, {
-                    id: newNotificationId, // ID único para forçar a notificação no cliente
-                    link: link,           // Link de clique
-                    message: message,     // Mensagem (para flexibilidade futura)
-                    timestamp: newNotificationId
-                });
-
-                setStatus(`Sucesso! Notificação (ID: ${newNotificationId}) enviada para todos os usuários.`, 'success', notificationStatusMessage);
-                notificationControlForm.reset();
-                notificationMessage.value = 'Nova atualização, clique aqui para baixar'; // Reseta o valor padrão
-                
-            } catch (error) {
-                console.error("Erro ao enviar notificação:", error);
-                setStatus(`Erro ao enviar notificação: ${error.message}`, 'error', notificationStatusMessage);
-            } finally {
-                sendBtn.disabled = false;
-                sendBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-ring"><path d="M10 2c-3.1 0-6 1.8-6 6v4.5l-2 2v2h20v-2l-2-2V8c0-4.2-3.4-6-6-6Z"/><path d="M10 2c0 2.2 1.8 4 4 4"/><circle cx="12" cy="18" r="1"/><path d="M12 21a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z"/></svg> Enviar Notificação Agora';
-            }
-        }
-        
-        // 9. LISTAR CONTEÚDO PARA REMOÇÃO
+        /** Carrega e renderiza a lista de conteúdo */
         async function fetchContentList() {
+            clearRemovalStatus();
+            contentList.innerHTML = '<li><p style="text-align: center; padding: 20px;">Carregando conteúdo...</p></li>';
+            
             try {
-                contentList.innerHTML = '<li style="text-align:center; padding: 15px;">Carregando...</li>';
-                const contentColRef = collection(db, 'content');
-                const contentSnapshot = await getDocs(contentColRef);
+                const snapshot = await getDocs(contentCollectionRef);
+                
+                if (snapshot.empty) {
+                    contentList.innerHTML = '<li><p style="text-align: center; padding: 20px;">Nenhum item encontrado no banco de dados.</p></li>';
+                    deleteSelectedBtn.disabled = true;
+                    return;
+                }
                 
                 let html = '';
-                contentSnapshot.forEach(doc => {
+                snapshot.forEach(doc => {
                     const data = doc.data();
                     const id = doc.id;
+                    
+                    // Exibe o Tipo Principal e a Categoria Específica para melhor identificação
+                    const typeDisplay = data.type ? data.type.toUpperCase() : 'N/A';
+                    const categoryDisplay = data.category ? ` - ${data.category}` : ''; 
+                    
                     html += `
                         <li class="content-item">
-                            <input type="checkbox" data-id="${id}" onchange="checkSelection()">
+                            <input type="checkbox" data-doc-id="${id}" id="item-${id}">
                             <div class="item-details">
                                 <strong>${data.name}</strong>
-                                <span>Tipo: ${data.type} | Categoria: ${data.category} | ID: ${id}</span>
+                                <span>[${typeDisplay}]${categoryDisplay} | ID: ${id}</span>
                             </div>
                         </li>
                     `;
                 });
-
-                contentList.innerHTML = html || '<li style="text-align:center; padding: 15px; color: #6c757d;">Nenhum conteúdo encontrado.</li>';
-                checkSelection();
-
+                
+                contentList.innerHTML = html;
+                deleteSelectedBtn.disabled = false;
+                
             } catch (error) {
-                console.error("Erro ao carregar lista de conteúdo:", error);
-                setStatus('Erro ao carregar lista para remoção.', 'error', removalStatusMessage);
+                console.error("Erro ao listar documentos: ", error);
+                contentList.innerHTML = '<li><p style="text-align: center; padding: 20px; color: var(--error-color);">Erro ao carregar lista. Verifique as regras de leitura do Firestore.</p></li>';
+                deleteSelectedBtn.disabled = true;
+                setStatus('Erro ao listar conteúdo.', 'error', removalStatusMessage);
             }
         }
         
-        // 10. ATUALIZAR CONTAGEM DE SELEÇÃO
-        function checkSelection() {
-            const checkboxes = contentList.querySelectorAll('input[type="checkbox"]');
-            let count = 0;
-            checkboxes.forEach(cb => {
-                if (cb.checked) count++;
-            });
-            
-            deleteSelectedBtn.textContent = `Excluir Itens Selecionados (${count})`;
-            deleteSelectedBtn.disabled = count === 0;
-        }
-        // Exponha a função ao escopo global para o `onchange`
-        window.checkSelection = checkSelection;
-
-        // 11. DELETAR CONTEÚDO
+        /** Exclui os itens selecionados */
         async function deleteSelectedContent() {
-            if (!confirm("Tem certeza que deseja EXCLUIR os itens selecionados? Esta ação é IRREVERSÍVEL.")) return;
+            const selectedCheckboxes = contentList.querySelectorAll('input[type="checkbox"]:checked');
+            const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.dataset.docId);
 
-            const checkboxes = contentList.querySelectorAll('input[type="checkbox"]:checked');
-            if (checkboxes.length === 0) return;
-
-            deleteSelectedBtn.disabled = true;
-            deleteSelectedBtn.textContent = 'Excluindo...';
+            if (selectedIds.length === 0) {
+                setStatus('Nenhum item selecionado para exclusão.', 'error', removalStatusMessage);
+                return;
+            }
             
-            let successCount = 0;
-            let errorCount = 0;
-
-            for (const checkbox of checkboxes) {
-                const id = checkbox.getAttribute('data-id');
-                try {
-                    await deleteDoc(doc(db, 'content', id));
-                    successCount++;
-                } catch (error) {
-                    console.error(`Erro ao excluir documento ${id}:`, error);
-                    errorCount++;
-                }
+            if (!confirm(`Tem certeza que deseja EXCLUIR ${selectedIds.length} itens? Esta ação é irreversível!`)) {
+                return;
             }
 
+            deleteSelectedBtn.disabled = true;
+            deleteSelectedBtn.textContent = `Excluindo ${selectedIds.length} itens...`;
+            clearRemovalStatus();
+
+            let successCount = 0;
+            let errorCount = 0;
+            
+            // Cria um array de promessas de exclusão
+            const deletePromises = selectedIds.map(async (id) => {
+                try {
+                    const docRef = doc(db, 'content', id);
+                    await deleteDoc(docRef);
+                    successCount++;
+                } catch (error) {
+                    console.error(`Erro ao excluir documento ${id}: `, error);
+                    errorCount++;
+                }
+            });
+            
+            // Espera todas as exclusões terminarem
+            await Promise.all(deletePromises);
+            
+            // Atualiza o status e a lista
             if (errorCount === 0) {
-                setStatus(`Sucesso! ${successCount} item(s) removido(s).`, 'success', removalStatusMessage);
+                setStatus(`Sucesso! ${successCount} item(s) excluído(s).`, 'success', removalStatusMessage);
             } else if (successCount > 0) {
-                 setStatus(`Concluído com ${successCount} sucessos e ${errorCount} erro(s). Verifique as permissões de exclusão.`, 'error', removalStatusMessage);
+                setStatus(`Excluído: ${successCount}. Erro: ${errorCount}. Verifique as permissões de exclusão.`, 'error', removalStatusMessage);
             } else {
                  setStatus(`Falha total: ${errorCount} erros. Verifique as regras de exclusão do Firestore.`, 'error', removalStatusMessage);
             }
@@ -893,14 +842,8 @@
             passwordLoginForm.addEventListener('submit', handleLogin);
             logoutBtn.addEventListener('click', handleLogout);
             
-            // Handlers do Formulário de Conteúdo e Versão
-            contentForm.addEventListener('submit', handleContentSubmit);
+            // NOVO: Adiciona o listener para atualizar as categorias ao mudar o tipo de conteúdo
             contentType.addEventListener('change', updateCategories);
-            versionControlForm.addEventListener('submit', handleVersionUpdate);
-            apkVersionControlForm.addEventListener('submit', handleApkVersionUpdate); 
-            
-            // NOVO: Handlers da Notificação
-            notificationControlForm.addEventListener('submit', handleNotificationSend);
             
             // Handlers da Tela de Remoção
             openRemovalBtn.addEventListener('click', () => {
@@ -910,15 +853,9 @@
             });
             closeRemovalBtn.addEventListener('click', () => showScreen('admin-form-screen'));
             deleteSelectedBtn.addEventListener('click', deleteSelectedContent);
-            document.getElementById('load-content-btn').addEventListener('click', fetchContentList);
             
-            // Exibe a tela correta ao carregar
-            if (isAuthenticated) {
-                showScreen('admin-form-screen');
-                // As chamadas de fetchServerVersion e fetchApkVersion são feitas dentro de handleLogin
-            } else {
-                showScreen('auth-screen');
-            }
+            // Exibe a tela de login por padrão
+            showScreen('auth-screen');
         });
 
     </script>
