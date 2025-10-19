@@ -408,6 +408,7 @@
                 
                 <div id="notification-status-message" class="status-message"></div>
             </div>
+            
             <div style="margin-top: 30px; display: flex; gap: 10px;">
                 <button class="btn btn-secondary" id="open-removal-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
@@ -586,10 +587,13 @@
                 localStorage.setItem('isAuthenticated', 'true');
                 setStatus('Login bem-sucedido!', 'success', loginStatusMessage);
                 adminPasswordInput.value = '';
-                showScreen('admin-form-screen');
                 
-                await fetchServerVersion();
-                await fetchApkVersion(); 
+                showScreen('loading-screen'); 
+                await Promise.all([
+                    fetchServerVersion(),
+                    fetchApkVersion()
+                ]);
+                showScreen('admin-form-screen');
 
             } else {
                 setStatus('Senha incorreta. Tente novamente.', 'error', loginStatusMessage);
@@ -763,7 +767,7 @@
             }
         }
         
-        // 8. ENVIAR NOTIFICAÇÃO (NOVO)
+        // 8. ENVIAR NOTIFICAÇÃO
         async function handleNotificationSend(e) {
             e.preventDefault();
             const link = notificationLink.value.trim();
@@ -779,15 +783,13 @@
             sendBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
 
             try {
-                // Gera um ID único baseado no timestamp para garantir que seja sempre "novo" para os usuários
                 const newNotificationId = Date.now().toString(); 
                 const updateDocRef = doc(db, 'settings', 'latest_update');
                 
-                // Grava a nova notificação
                 await setDoc(updateDocRef, {
-                    id: newNotificationId, // ID único para forçar a notificação no cliente
-                    link: link,           // Link de clique
-                    message: message,     // Mensagem (para flexibilidade futura)
+                    id: newNotificationId, 
+                    link: link,           
+                    message: message,     
                     timestamp: newNotificationId
                 });
 
@@ -806,8 +808,11 @@
         
         // 9. LISTAR CONTEÚDO PARA REMOÇÃO
         async function fetchContentList() {
+             document.getElementById('load-content-btn').disabled = true;
+             contentList.innerHTML = '<li style="text-align:center; padding: 15px;">Carregando...</li>';
+             removalStatusMessage.style.display = 'none';
+
             try {
-                contentList.innerHTML = '<li style="text-align:center; padding: 15px;">Carregando...</li>';
                 const contentColRef = collection(db, 'content');
                 const contentSnapshot = await getDocs(contentColRef);
                 
@@ -831,7 +836,9 @@
 
             } catch (error) {
                 console.error("Erro ao carregar lista de conteúdo:", error);
-                setStatus('Erro ao carregar lista para remoção.', 'error', removalStatusMessage);
+                setStatus('Erro ao carregar lista para remoção. Cheque a conexão.', 'error', removalStatusMessage);
+            } finally {
+                 document.getElementById('load-content-btn').disabled = false;
             }
         }
         
@@ -846,8 +853,7 @@
             deleteSelectedBtn.textContent = `Excluir Itens Selecionados (${count})`;
             deleteSelectedBtn.disabled = count === 0;
         }
-        // Exponha a função ao escopo global para o `onchange`
-        window.checkSelection = checkSelection;
+        window.checkSelection = checkSelection; // Expõe a função para o HTML
 
         // 11. DELETAR CONTEÚDO
         async function deleteSelectedContent() {
@@ -882,13 +888,12 @@
             }
 
             deleteSelectedBtn.disabled = false;
-            deleteSelectedBtn.textContent = 'Excluir Itens Selecionados';
             fetchContentList(); // Recarrega a lista
         }
         
         // --- INICIALIZAÇÃO E HANDLERS DE EVENTO ---
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Handlers de Login/Logout
             passwordLoginForm.addEventListener('submit', handleLogin);
             logoutBtn.addEventListener('click', handleLogout);
@@ -899,7 +904,7 @@
             versionControlForm.addEventListener('submit', handleVersionUpdate);
             apkVersionControlForm.addEventListener('submit', handleApkVersionUpdate); 
             
-            // NOVO: Handlers da Notificação
+            // Handlers da Notificação
             notificationControlForm.addEventListener('submit', handleNotificationSend);
             
             // Handlers da Tela de Remoção
@@ -912,15 +917,24 @@
             deleteSelectedBtn.addEventListener('click', deleteSelectedContent);
             document.getElementById('load-content-btn').addEventListener('click', fetchContentList);
             
-            // Exibe a tela correta ao carregar
+            // CORREÇÃO: Verifica a autenticação ao carregar
             if (isAuthenticated) {
+                // Se autenticado, carrega os dados e mostra o painel
+                showScreen('loading-screen'); 
+                
+                await Promise.all([
+                    fetchServerVersion(),
+                    fetchApkVersion()
+                ]);
+                
                 showScreen('admin-form-screen');
-                // As chamadas de fetchServerVersion e fetchApkVersion são feitas dentro de handleLogin
+
             } else {
+                // Se não autenticado, mostra a tela de login
                 showScreen('auth-screen');
             }
         });
 
     </script>
 </body>
-</html>
+                        </html>
